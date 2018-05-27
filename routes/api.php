@@ -27,4 +27,19 @@ Route::get('/redirect', function (){
     return redirect('http://localhost:8888/BiZhi/public/oauth/authorize?' . $query);
 });
 
+Route::get('/refresh', function (Request $request){
+    $http = new GuzzleHttp\Client;
+
+    $response = $http->post('http://localhost:8888/BiZhi/public/oauth/token', [
+        'form_params' => [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $request->refresh_token,
+            'client_id' => '3',
+            'client_secret' => 'mGLQZPyKIN4jhQJfX05t3jV2lMTfGvqXxyoTnOF3',
+            'scope' => '',
+        ],
+    ]);
+
+    return json_decode((string) $response->getBody(), true);
+});
 
